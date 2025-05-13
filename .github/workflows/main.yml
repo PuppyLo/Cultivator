@@ -1,8 +1,9 @@
-name: Gh-Pages
+name: Build & Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -10,11 +11,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-      - uses: bluefireteam/flutter-gh-pages@v9
-      - uses: bluefireteam/flutter-gh-pages@v9
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          workingDir: cultivator
-      - uses: bluefireteam/flutter-gh-pages@v9
+          flutter-version: "3.32.0-0.4.pre"
+
+      - name: Enable web
+        run: flutter config --enable-web
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build web
+        run: flutter build web --release
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          baseHref: /Cultivator/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
