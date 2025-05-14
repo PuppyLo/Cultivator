@@ -1,32 +1,40 @@
+import 'package:cultivator_web/Pages/home.dart';
+import 'package:cultivator_web/utils/screen/screen_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import 'Pages/about.dart';
-import 'Pages/download.dart';
-import 'Pages/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final router = GoRouter(
-      routes: [
-        GoRoute(path: '/', builder: (_, __) => const HomePage()),
-        GoRoute(path: '/about', builder: (_, __) => const AboutPage()),
-        GoRoute(path: '/download', builder: (_, __) => const DownloadPage()),
-      ],
-    );
 
-    return MaterialApp.router(
-      title: 'Cultivator Web',
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.orange),
-      routerConfig: router,
+      color: Color(0xFF2c2f32),
+      theme: ThemeData(
+          brightness: Brightness.light
+      ),
+      home: MyAppChild(),
     );
+  }
+}
+
+class MyAppChild extends StatefulWidget {
+
+  @override
+  _MyAppChildState createState() => _MyAppChildState();
+}
+
+class _MyAppChildState extends State<MyAppChild> {
+  @override
+  Widget build(BuildContext context) {
+    // instantiating ScreenUtil singleton instance, as this will be used throughout
+    // the app to get screen size and other stuff
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    return HomePage();
   }
 }
