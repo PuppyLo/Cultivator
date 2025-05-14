@@ -25,7 +25,7 @@ class CustomCursor extends MouseRegion {
   static final String text = 'text';
   static final String nResize = 'n-resize';
   static final String nwResize = 'nw-resize';
-  static final String help = 'help';
+  static final String help = 'help'; 
   static final String verticalText = 'vertical-text';
   static final String sResize = 's-resize';
   static final String seResize = 'se-resize';
@@ -34,7 +34,7 @@ class CustomCursor extends MouseRegion {
   static final String wResize = 'w-resize';
   static final String swResize = 'sw-resize';
 
-  CustomCursor({Widget? child, String cursorStyle = 'pointer'})
+  CustomCursor({super.key, super.child, String cursorStyle = 'pointer'})
       : super(
     onHover: (PointerHoverEvent evt) {
       if (kIsWeb) { cursorStyle;
@@ -44,7 +44,6 @@ class CustomCursor extends MouseRegion {
       if (kIsWeb) {'default';
       }
     },
-    child: child,
   );
 }
 
