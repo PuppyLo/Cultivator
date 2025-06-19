@@ -17,9 +17,7 @@ class MyLandingApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        textTheme: GoogleFonts.sfProDisplayTextTheme(
-          Theme.of(context).textTheme,
-        ),
+        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
