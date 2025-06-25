@@ -6,6 +6,7 @@ void main() {
 
 class CultivatorApp extends StatelessWidget {
   const CultivatorApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +24,7 @@ class CultivatorApp extends StatelessWidget {
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
+
   @override
   LandingPageState createState() => LandingPageState();
 }
@@ -32,32 +34,34 @@ class LandingPageState extends State<LandingPage>
   late ScrollController _scrollController;
   late AnimationController _heroAnimationController;
   late AnimationController _floatingController;
+
   late Animation<double> _heroFadeAnimation;
   late Animation<Offset> _heroSlideAnimation;
+  // late Animation<double> _floatingAnimation;
+
   final GlobalKey _homeKey = GlobalKey();
   final GlobalKey _featuresKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
-
-  double _featuresPosition = 0;
-  double _contactPosition = 0;
-  String _currentSection = 'home';
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+
     _heroAnimationController = AnimationController(
-      duration: Duration(milliseconds: 1200),
+      duration: Duration(milliseconds: 6),
       vsync: this,
     );
+
     _floatingController = AnimationController(
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 2),
       vsync: this,
     );
 
     _heroFadeAnimation = Tween<double>(begin: -20.0, end: 20.0).animate(
       CurvedAnimation(parent: _heroAnimationController, curve: Curves.easeOut),
     );
+
     _heroSlideAnimation = Tween<Offset>(begin: Offset(0, 0.3), end: Offset.zero)
         .animate(
           CurvedAnimation(
@@ -66,68 +70,30 @@ class LandingPageState extends State<LandingPage>
           ),
         );
 
+    // _floatingAnimation = Tween<double>(begin: -20.0, end: 20.0).animate(
+    //   CurvedAnimation(parent: _floatingController, curve: Curves.easeInOut),
+    // );
+
     _heroAnimationController.forward();
     _floatingController.repeat(reverse: true);
-
-    _scrollController.addListener(_updateCurrentSection);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _featuresPosition = getPositionFromKey(_featuresKey);
-      _contactPosition = getPositionFromKey(_contactKey);
-    });
-  }
-
-  double getPositionFromKey(GlobalKey key) {
-    final RenderBox renderBox =
-        key.currentContext?.findRenderObject() as RenderBox;
-    final position = renderBox.localToGlobal(Offset.zero).dy;
-    return position;
-  }
-
-  void _updateCurrentSection() {
-    final scrollOffset = _scrollController.offset;
-
-    if (scrollOffset < _featuresPosition * 0.5) {
-      _setCurrentSection('home');
-    } else if (scrollOffset < _contactPosition * 0.9) {
-      _setCurrentSection('features');
-    } else {
-      _setCurrentSection('contact');
-    }
-  }
-
-  void _setCurrentSection(String section) {
-    if (_currentSection != section) {
-      setState(() {
-        _currentSection = section;
-      });
-    }
-  }
-
-  void _scrollToSection(GlobalKey key) {
-    if (key == _homeKey) {
-      _scrollController.animateTo(
-        0.0,
-        duration: Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    } else if (key.currentContext != null) {
-      Scrollable.ensureVisible(
-        key.currentContext!,
-        duration: Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-        // alignment: 0.3,
-      );
-    }
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_updateCurrentSection);
     _scrollController.dispose();
     _heroAnimationController.dispose();
     _floatingController.dispose();
     super.dispose();
+  }
+
+  void _scrollToSection(GlobalKey key) {
+    if (key.currentContext != null) {
+      Scrollable.ensureVisible(
+        key.currentContext!,
+        duration: Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -180,23 +146,14 @@ class LandingPageState extends State<LandingPage>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildNavLink(
-                    'Home',
-                    () => _scrollToSection(_homeKey),
-                    isActive: _currentSection == 'home',
-                  ),
+                  _buildNavLink('Home', () => _scrollToSection(_homeKey)),
                   SizedBox(width: 32),
                   _buildNavLink(
                     'Features',
                     () => _scrollToSection(_featuresKey),
-                    isActive: _currentSection == 'features',
                   ),
                   SizedBox(width: 32),
-                  _buildNavLink(
-                    'Contact',
-                    () => _scrollToSection(_contactKey),
-                    isActive: _currentSection == 'contact',
-                  ),
+                  _buildNavLink('Contact', () => _scrollToSection(_contactKey)),
                   SizedBox(width: 32),
                   _buildNavCTA(),
                 ],
@@ -208,11 +165,7 @@ class LandingPageState extends State<LandingPage>
     );
   }
 
-  Widget _buildNavLink(
-    String text,
-    VoidCallback onTap, {
-    bool isActive = false,
-  }) {
+  Widget _buildNavLink(String text, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -220,8 +173,8 @@ class LandingPageState extends State<LandingPage>
         child: Text(
           text,
           style: TextStyle(
-            color: isActive ? Color(0xFF2563EB) : Color(0xFF475569),
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+            color: Color(0xFF475569),
+            fontWeight: FontWeight.w500,
             fontSize: 16,
           ),
         ),
@@ -249,7 +202,6 @@ class LandingPageState extends State<LandingPage>
 
   Widget _buildHeroSection() {
     return Container(
-      key: _homeKey,
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -304,6 +256,7 @@ class LandingPageState extends State<LandingPage>
               ),
             ),
           ),
+          // ..._buildFloatingCards(),
         ],
       ),
     );
@@ -343,6 +296,109 @@ class LandingPageState extends State<LandingPage>
       ),
     );
   }
+
+  // List<Widget> _buildFloatingCards() {
+  //   if (MediaQuery.of(context).size.width < 768) return [];
+
+  //   return [
+  //     Positioned(
+  //       top: MediaQuery.of(context).size.height * 0.2,
+  //       left: MediaQuery.of(context).size.width * 0.1,
+  //       child: AnimatedBuilder(
+  //         animation: _floatingAnimation,
+  //         builder: (context, child) {
+  //           return Transform.translate(
+  //             offset: Offset(0, _floatingAnimation.value),
+  //             child: _buildFloatingCard(
+  //               '📅',
+  //               'Smart Scheduling',
+  //               'AI-powered time management',
+  //               Color(0xFF2563EB),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //     Positioned(
+  //       top: MediaQuery.of(context).size.height * 0.6,
+  //       right: MediaQuery.of(context).size.width * 0.1,
+  //       child: AnimatedBuilder(
+  //         animation: _floatingAnimation,
+  //         builder: (context, child) {
+  //           return Transform.translate(
+  //             offset: Offset(0, -_floatingAnimation.value),
+  //             child: _buildFloatingCard(
+  //               '⚡',
+  //               'Instant Sync',
+  //               'Real-time collaboration',
+  //               Color(0xFF10B981),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //     Positioned(
+  //       top: MediaQuery.of(context).size.height * 0.4,
+  //       left: MediaQuery.of(context).size.width * 0.05,
+  //       child: AnimatedBuilder(
+  //         animation: _floatingAnimation,
+  //         builder: (context, child) {
+  //           return Transform.translate(
+  //             offset: Offset(0, _floatingAnimation.value * 0.5),
+  //             child: _buildFloatingCard(
+  //               '📈',
+  //               'Growth Analytics',
+  //               'Track your productivity',
+  //               Color(0xFFF59E0B),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   ];
+  // }
+
+  // Widget _buildFloatingCard(
+  //   String emoji,
+  //   String title,
+  //   String subtitle,
+  //   Color color,
+  // ) {
+  //   return Container(
+  //     padding: EdgeInsets.all(32),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(20),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black.withOpacity(0.15),
+  //           blurRadius: 50,
+  //           offset: Offset(0, 25),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(emoji, style: TextStyle(fontSize: 32)),
+  //         SizedBox(height: 16),
+  //         Text(
+  //           title,
+  //           style: TextStyle(
+  //             fontWeight: FontWeight.w600,
+  //             fontSize: 16,
+  //             color: Color(0xFF0F172A),
+  //           ),
+  //         ),
+  //         SizedBox(height: 8),
+  //         Text(
+  //           subtitle,
+  //           style: TextStyle(color: Color(0xFF475569), fontSize: 14),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildFeaturesSection() {
     return Container(
@@ -644,7 +700,7 @@ class LandingPageState extends State<LandingPage>
           Container(height: 1, color: Color(0xFF1E293B)),
           SizedBox(height: 32),
           Text(
-            '© 2025 Cultivator. All rights reserved. Grow your time, harvest success.',
+            '© 2024 Cultivator. All rights reserved. Grow your time, harvest success.',
             style: TextStyle(color: Color(0xFFCBD5E1)),
             textAlign: TextAlign.center,
           ),
