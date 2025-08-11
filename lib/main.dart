@@ -167,11 +167,21 @@ class LandingPageState extends State<LandingPage>
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(offset > 100 ? 0.98 : 0.95),
+                color: const Color.fromARGB(
+                  255,
+                  255,
+                  255,
+                  255,
+                ).withOpacity(offset > 100 ? 0.98 : 0.95),
                 borderRadius: BorderRadius.circular(50),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(offset > 100 ? 0.25 : 0.1),
+                    color: const Color.fromARGB(
+                      255,
+                      0,
+                      0,
+                      0,
+                    ).withOpacity(offset > 100 ? 0.25 : 0.1),
                     blurRadius: offset > 100 ? 50 : 20,
                     offset: Offset(0, offset > 100 ? 25 : 10),
                   ),
@@ -582,7 +592,7 @@ class LandingPageState extends State<LandingPage>
   }
 
   Widget _buildSubmitButton() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
