@@ -172,7 +172,7 @@ class LandingPageState extends State<LandingPage>
                   255,
                   255,
                   255,
-                ).withOpacity(offset > 100 ? 0.98 : 0.95),
+                ).withAlpha(offset > 100 ? 250 : 242),
                 borderRadius: BorderRadius.circular(50),
                 boxShadow: [
                   BoxShadow(
@@ -181,7 +181,7 @@ class LandingPageState extends State<LandingPage>
                       0,
                       0,
                       0,
-                    ).withOpacity(offset > 100 ? 0.25 : 0.1),
+                    ).withAlpha(offset > 100 ? 64 : 26),
                     blurRadius: offset > 100 ? 50 : 20,
                     offset: Offset(0, offset > 100 ? 25 : 10),
                   ),
@@ -265,7 +265,7 @@ class LandingPageState extends State<LandingPage>
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFF8FAFC), Color(0xFF2563EB).withOpacity(0.05)],
+          colors: [Color(0xFFF8FAFC), Color(0xFF2563EB).withAlpha(13)],
         ),
       ),
       child: Stack(
@@ -329,7 +329,7 @@ class LandingPageState extends State<LandingPage>
           borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF2563EB).withOpacity(0.3),
+              color: Color(0xFF2563EB).withAlpha(77),
               blurRadius: 25,
               offset: Offset(0, 20),
             ),
@@ -382,8 +382,8 @@ class LandingPageState extends State<LandingPage>
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 64,
-                mainAxisSpacing: 64,
+                crossAxisSpacing: 32,
+                mainAxisSpacing: 32,
                 childAspectRatio: 1.2,
                 children: [
                   _buildFeatureCard(
@@ -438,7 +438,7 @@ class LandingPageState extends State<LandingPage>
     Color color,
   ) {
     return Container(
-      padding: EdgeInsets.all(64),
+      padding: EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: Color(0xFFF8FAFC),
         borderRadius: BorderRadius.circular(30),
@@ -450,7 +450,7 @@ class LandingPageState extends State<LandingPage>
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [color, color.withOpacity(0.8)]),
+              gradient: LinearGradient(colors: [color, color.withAlpha(204)]),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Center(child: Text(emoji, style: TextStyle(fontSize: 32))),
@@ -524,9 +524,9 @@ class LandingPageState extends State<LandingPage>
     return Container(
       padding: EdgeInsets.all(64),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withAlpha(26),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: Colors.white.withAlpha(51)),
       ),
       child: Column(
         children: [
@@ -569,16 +569,16 @@ class LandingPageState extends State<LandingPage>
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+            hintStyle: TextStyle(color: Colors.white.withAlpha(153)),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.1),
+            fillColor: Colors.white.withAlpha(26),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+              borderSide: BorderSide(color: Colors.white.withAlpha(51)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+              borderSide: BorderSide(color: Colors.white.withAlpha(51)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),

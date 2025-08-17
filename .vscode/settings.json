@@ -1,0 +1,8 @@
+{
+    "dart.analyzerPath": null,
+    "dart.customDevTools": {},
+    "dart.devToolsLocation": {
+        "default": "beside",
+        "inspector": "sidebar"
+    }
+}
